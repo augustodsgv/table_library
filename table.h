@@ -20,8 +20,10 @@ typedef struct{
     char * type;
 }matrix;
 
+int print_cached();
+void fill_cache(void *** matrix, int n_lines, int n_columns, labels * table_labels, table_config * config);
 // void print_table(matrix mat, table_config config, labels * table_labels);
-void print_table(void *** matrix, int n_lines, int n_columns, labels * table_labels, table_config config);
+void print_table(void *** matrix, int n_lines, int n_columns, labels * table_labels, table_config * config);
 void table_line_separator(char *** matrix, int n_lines, int n_columns, int * columns_length);
 void simple_table(char *** matrix, int n_lines, int n_columns, int * columns_length);
 void print_element(char * elemento, int column_length);

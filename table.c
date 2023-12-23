@@ -4,17 +4,42 @@
 #include "table.h"
 
 #define string_size 5
+void *** matrix_cached;
+int n_lines_cached;
+int n_columns_cached;
+labels * table_labels_cached;
+table_config * config_cached;
+int cache_avaible = 0;
+
+// Printa novamente a úlima matrix. Como recebe ponteiros, ajuda a não precisar de 
+int print_cached(){
+    if(cache_avaible){
+        print_table(matrix_cached, n_lines_cached, n_columns_cached, table_labels_cached, config_cached);
+        return 1;
+    }
+    return 0;
+}
+
+void fill_cache(void *** matrix, int n_lines, int n_columns, labels * table_labels, table_config * config){
+    matrix_cached = matrix;
+    n_lines_cached = n_lines;
+    n_columns_cached = n_columns;
+    table_labels_cached = table_labels;
+    config_cached = config;
+    cache_avaible = 1;
+}
 
 // Print tables in a formatable fortmat
-void print_table(void *** matrix, int n_lines, int n_columns, labels * table_labels, table_config config){
+void print_table(void *** matrix, int n_lines, int n_columns, labels * table_labels, table_config * config){
+    fill_cache(matrix, n_lines, n_columns, table_labels, config);
     char *** string_matrix;
-    if(!strcmp(config.data_type, "%s") || !strcmp(config.data_type, "%c"))
+    if(!strcmp(config->data_type, "%s") || !strcmp(config->data_type, "%c"))
         string_matrix = (char***)matrix;
     else
-        string_matrix = convert_matrix(*matrix, n_lines, n_columns, config.data_type);
+        string_matrix = convert_matrix(*matrix, n_lines, n_columns, config->data_type);
     
     int * columns_length;
-    if (config.header){
+    if (config->header){
         columns_length = get_columns_length(string_matrix, table_labels, n_lines, n_columns);
         if (table_labels == NULL){
             // TODO : Verificar como usar o stderr para exibir essa mensagem
@@ -25,7 +50,7 @@ void print_table(void *** matrix, int n_lines, int n_columns, labels * table_lab
         header(table_labels, columns_length);
     }else
         columns_length = get_columns_length(string_matrix, NULL, n_lines, n_columns);
-    if(config.line_division){
+    if(config->line_division){
         table_line_separator(string_matrix, n_lines, n_columns, columns_length);
         return;
     }
