@@ -174,3 +174,51 @@ char *** convert_matrix(void ** matrix, int n_lines, int n_columns, const char *
     }
     return char_matrix;
 }
+
+void print_matrix(void *** matrix, int n_lines, int n_columns, const char * origin_type){
+    for (int i = 0; i < n_lines; i++){
+        for(int j = 0; j < n_columns; j++){
+            char type = origin_type[1];
+            switch (type){
+            case 's':
+                for (int i = 0; i < n_lines; i++){
+                    for(int j = 0; j < n_columns; j++)
+                        printf("%s ", matrix[i][j]);
+                    printf("\n");
+                }
+                break;
+            case 'c':
+                char ** matrix_print = *(char***)matrix;
+                for (int i = 0; i < n_lines; i++){
+                    for(int j = 0; j < n_columns; j++)
+                        printf("%c ", matrix_print[i][j]);
+                    printf("\n");
+                }
+                break;
+            case 'd':
+                int ** matrix_print = *(int***)matrix;
+                for (int i = 0; i < n_lines; i++){
+                    for(int j = 0; j < n_columns; j++)
+                        printf("%d ", matrix_print[i][j]);
+                    printf("\n");
+                }
+                break;
+            case 'f':
+                float ** matrix_print = *(float***)matrix;
+                for (int i = 0; i < n_lines; i++){
+                    for(int j = 0; j < n_columns; j++)
+                        printf("%f ", matrix_print[i][j]);
+                    printf("\n");
+                }
+                break;
+            default:
+                // TODO : Verificar como usar o stderr para exibir essa mensagem
+                printf("From: table library -> ");
+                printf("Error: trying to print matrix from unsupported type\n");
+                // TODO : Verificar como deesalocar a memória da melhor forma
+                exit(1);
+            }
+                
+        }
+    }
+}

@@ -31,7 +31,7 @@ void header(labels * table_labels, int * column_length);
 void separator_line(int n_columns, int * column_length);
 int * get_columns_length(char *** matrix, labels * table_labels, int n_lines, int n_columns);
 char *** convert_matrix(void ** matrix, int n_lines, int n_columns, const char * origin_type);
-
+void print_matrix(void *** matrix, int n_lines, int n_columns, const char * origin_type);
 
 
 #endif /*TABLE_H*/
